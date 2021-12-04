@@ -1,9 +1,9 @@
 type BingoCard = BingoCardField[][];
 type BingoCardField = (number | 'X')
 
-const extractInput = (lines: string[]): [number[], BingoCard[]] => {
-  const numbersDrawn = lines.splice(0, 1)[0].split(',').map(Number);
-  const bingoCards = lines.map(card => card.split('\n').map(x => x.trim().split(/\s+/).map(Number))) as BingoCard[];
+const extractInput = ([inputNumbers, ...inputCards]: string[]): [number[], BingoCard[]] => {
+  const numbersDrawn = inputNumbers.split(',').map(Number);
+  const bingoCards = inputCards.map(card => card.split('\n').map(x => x.trim().split(/\s+/).map(Number))) as BingoCard[];
   return [numbersDrawn, bingoCards];
 };
 
@@ -11,9 +11,7 @@ const drawNumber = (numberDrawn: number, cards: BingoCard[]): void => {
   cards.forEach((card: BingoCard) => {
     card.forEach((row: BingoCardField[]) => {
       row.forEach((_: BingoCardField, index: number) => {
-        if (row[index] === numberDrawn) {
-          row[index] = 'X';
-        }
+        (row[index] === numberDrawn) && (row[index] = 'X');
       });
     });
   });
@@ -36,8 +34,8 @@ export const p1 = (input: string): number | undefined  => {
   const [numbersDrawn, bingoCards] = extractInput(input.split('\n\n'));
   for (const numberDrawn of numbersDrawn) {
     drawNumber(numberDrawn, bingoCards);
-    const winners = findCurrentWinners(bingoCards);
-    if (winners.length) return accumulateNumbers(winners[0]) * numberDrawn;
+    const [winner] = findCurrentWinners(bingoCards);
+    if (winner) return accumulateNumbers(winner) * numberDrawn;
   }
 }
 
@@ -48,7 +46,8 @@ export const p2 = (input: string): number | undefined => {
     const winners = findCurrentWinners(bingoCards);
     if (winners.length) {
       bingoCards = bingoCards.filter(card => !winners.includes(card))
-      if (!bingoCards.length) return accumulateNumbers(winners[0]) * numberDrawn;
+      const [winner] = winners;
+      if (!bingoCards.length) return accumulateNumbers(winner) * numberDrawn;
     }
   }
 }
