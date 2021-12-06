@@ -9,7 +9,7 @@ const calculateFish = (input: string, days: number) => {
     fishPerLifeStage[BABY_FISH_TIMER - RESET_TIMER_TO - 1] += createdFishes!;
     fishPerLifeStage.unshift(createdFishes!);
   }
-  return fishPerLifeStage.reduce((a, b) => a + b);
+  return fishPerLifeStage.reduce((totalFish, fishInLifeStage) => totalFish + fishInLifeStage);
 }
 
 export const p1 = (input: string) => calculateFish(input, 80);
