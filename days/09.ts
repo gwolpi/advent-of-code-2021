@@ -56,15 +56,15 @@ export const p2 = (input: string): number => {
   const heightmap = new Heightmap(input, (x) => x < 9);
   let nextBasinId = 0;
   for (const {x, y, height} of heightmap) {
-    const basinsAround = heightmap.getNeighboursFor(x, y)
+    const neighbourBasinIds = heightmap.getNeighboursFor(x, y)
       .map(({basinId}) => basinId)
       .filter(basinId => basinId !== 0)
       .filter((basinId, i, arr) => arr.indexOf(basinId) === i);
-    const basinId = basinsAround.pop() || ++nextBasinId;
+    const basinId = neighbourBasinIds.pop() || ++nextBasinId;
     heightmap.set({x, y, basinId, height});
-    for (const neighbourBasin of basinsAround) {
+    for (const neighbourBasinId of neighbourBasinIds) {
       for (const {x, y, basinId: basin, height} of heightmap) {
-        if (basin === neighbourBasin) heightmap.set({x, y, basinId, height});
+        if (basin === neighbourBasinId) heightmap.set({x, y, basinId, height});
       }
     }
   }
