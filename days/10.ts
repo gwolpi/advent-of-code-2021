@@ -7,7 +7,7 @@ export const p1 = (input: string): number | undefined => {
       const oldLength = line.length + 0;
       line = line.replaceAll(/\(\)|\[\]|\{\}|\<\>/g, '');
       if (oldLength === line.length) {
-        const match = line.match(/(\)|\]|\}|\>)/);
+        const match = line.match(/([\)\]\}\>])/);
         if (match) total += points[match[1]];
         return total;
       } 
