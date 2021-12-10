@@ -24,7 +24,7 @@ export const p2 = (input: string): number | undefined => {
       const oldLength = line.length + 0;
       line = line.replaceAll(/\(\)|\[\]|\{\}|\<\>/g, '').trim();
       if (oldLength === line.length) {
-        if (line.match(/(\)|\]|\}|\>)/)) return total;
+        if (line.match(/([\)\]\}\>])/)) return total;
         return [
           ...total,  
           line.split('').reduceRight((acc, char) => 
