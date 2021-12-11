@@ -7,7 +7,7 @@ export const p1 = (input: string): number | undefined => {
   return input.split('\n').reduce((total, line) => {
     while(line.length !== (line = line.replaceAll(regex, '').trim()).length);
     const match = line.match(/([\)\]\}\>])/);
-    if (match) total += points[match[1]];
+    if (match) total += points[match.pop()!];
     return total;
   }, 0) 
 }
