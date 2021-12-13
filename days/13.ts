@@ -10,27 +10,26 @@ const processInput = (input: string): [DotMatrix, Fold[]] => {
       (acc[y] ||= {})[x] = true;
       return acc;
     }, {} as DotMatrix);
-  const folds: Fold[] = [...foldsInput.matchAll(/fold along ([xy])=(\d+)/g)].map(([, axis, pos]) => ({ axis, pos: +pos }));
+  const folds: Fold[] = [...foldsInput.matchAll(/fold along ([xy])=(\d+)/g)]
+    .map(([, axis, pos]) => ({ axis, pos: +pos }));
   return [dotMatrix, folds];
 }
 
 const fold = (matrix: DotMatrix, { axis, pos }: Fold): void => {
   switch (axis) {
     case 'x': {
-      for (const y in matrix)
-        for (const x in matrix[y])
-          if (+x > pos) {
-            (matrix[y] ||= {})[2 * pos - +x] = true;
-            delete matrix[y][x];
-          }
+      Object.keys(matrix).map(Number).forEach((y) =>
+        Object.keys(matrix[y]).map(Number).filter(x => x > pos).forEach(x => {
+          (matrix[y] ||= {})[2 * pos - x] = true;
+          delete matrix[y][x];
+        }));
       return;
     }
     case 'y': {
-      for (const y in matrix)
-        if (+y >= pos) {
-          Object.assign((matrix[2 * pos - +y] ||= {}), matrix[y]);
-          delete matrix[y];
-        }
+      Object.keys(matrix).map(Number).filter(y => y >= pos).forEach(y => {
+        Object.assign((matrix[2 * pos - +y] ||= {}), matrix[y]);
+        delete matrix[y];
+      });
       return;
     }
   }
@@ -45,19 +44,15 @@ export const p1 = (input: string): number => {
 export const p2 = (input: string): string => {
   const [dotMatrix, folds] = processInput(input);
   folds.forEach((x: Fold) => fold(dotMatrix, x));
-  const ys: number[] = Object.keys(dotMatrix).map(Number).filter(y => dotMatrix[y] && Object.keys(dotMatrix[y]).length);
-  const xs: number[] = Object.values(dotMatrix).reduce((acc, row) => ([...acc, ...Object.keys(row).map(Number)]), [] as number[]);
-
   let result = "";
+  const ys: number[] = Object.keys(dotMatrix).map(Number)
+    .filter(y => dotMatrix[y] && Object.keys(dotMatrix[y]).length);
+  const xs: number[] = Object.values(dotMatrix)
+    .reduce((acc, row) => ([...acc, ...Object.keys(row).map(Number)]), [] as number[]);
   for (let y = Math.min(...ys); y <= Math.max(...ys); y++) {
     result += "\n";
-    for (let x = Math.min(...xs); x <= Math.max(...xs); x++) {
-      if (y in dotMatrix && x in dotMatrix[y]) {
-        result += "🟥";
-      } else {
-        result += "⬜";
-      }
-    }
+    for (let x = Math.min(...xs); x <= Math.max(...xs); x++)
+      result += y in dotMatrix && x in dotMatrix[y] ? "🟥" : "⬜";
   }
   return result;
 }
