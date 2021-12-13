@@ -1,8 +1,8 @@
 import { p1, p2 } from './10.ts';
 import { assertEquals } from "https://deno.land/x/std@0.65.0/testing/asserts.ts";
 
-const input = 
- `[({(<(())[]>[[{[]{<()<>>
+const input =
+  `[({(<(())[]>[[{[]{<()<>>
   [(()[<>])]({[<{<<[]>>(
   {([(<{}[<>[]}>{[]{[(<()>
   (((({<>}<{<{<>}{[]{[]{}
