@@ -13,27 +13,9 @@ const createMapFromConnections = (input: string): CaveMap => {
   return map;
 };
 
-export const p1 = (input: string): number => {
-  const map = createMapFromConnections(input);
+const getPossibilities = (map: CaveMap, allowSecondVisit: boolean = false): number => {
   let possibilities = 0;
-  const traverseCaves = (caveName = 'start', visited = new Array<string>()) => {
-    if (caveName === 'end') {
-      possibilities++;
-      return;
-    }
-    if (caveName.match(/[a-z]{2}/)) visited = [...visited, caveName];
-    map[caveName]
-      .filter(cave => !visited.includes(cave))
-      .forEach(cave => traverseCaves(cave, visited));
-  };
-  traverseCaves();
-  return possibilities;
-}
-
-export const p2 = (input: string): number => {
-  const map = createMapFromConnections(input);
-  let possibilities = 0;
-  const traverseCaves = (caveName = 'start', visited = new Array<string>(), revisited: boolean = false) => {
+  const traverseCaves = (caveName = 'start', visited = new Array<string>(), revisited: boolean = !allowSecondVisit) => {
     if (caveName === 'end') {
       possibilities++;
       return;
@@ -49,3 +31,7 @@ export const p2 = (input: string): number => {
   traverseCaves();
   return possibilities;
 }
+
+export const p1 = (input: string): number => getPossibilities(createMapFromConnections(input));
+
+export const p2 = (input: string): number => getPossibilities(createMapFromConnections(input), true);
