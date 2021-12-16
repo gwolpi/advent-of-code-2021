@@ -29,8 +29,7 @@ const binaryToPackage = (binaryBitsArr: string[], fn?: (x: number) => void): num
   }
   const values = [];
   if (+binaryBitsArr.splice(0, 1)! === 0) {
-    const lengthSign = binaryBitsArr.splice(0, 15);
-    const length = binaryToNum(lengthSign);
+    const length = binaryToNum(binaryBitsArr.splice(0, 15));
     const bits = binaryBitsArr.splice(0, length);
     while (bits.length > 0) values.push(binaryToPackage(bits, fn));
   } else {
