@@ -32,18 +32,18 @@ export const p2 = (input: string): number => {
   const winsPerPlayer = Array.from({ length: game.length }, () => 0);
   const scorePerPlayer = Array.from({ length: game.length }, () => 0);
   const posPerPlayer = game.map(([, pos]) => Number(pos));
-  const rollDie = (pos: number[], score: number[], playerIdWithTurn: number, multiplier = 1): void => {
-    for (const [roll, count] of rollCount) {
+  const rollDie = (pos: number[], score: number[], playerIdWithTurn: number, universes = 1): void => {
+    for (const [roll, multiplier] of rollCount) {
       const currPos = [...pos];
       const currScore = [...score];
       const playerPos = (currPos[playerIdWithTurn] + roll) % 10 || 10;
       currPos[playerIdWithTurn] = playerPos;
       currScore[playerIdWithTurn] += playerPos;
       if (currScore[playerIdWithTurn] >= 21) {
-        winsPerPlayer[playerIdWithTurn] += multiplier * count;
+        winsPerPlayer[playerIdWithTurn] += universes * multiplier;
         continue;
       } 
-      rollDie(currPos, currScore, (playerIdWithTurn + 1) % game.length, multiplier * count);
+      rollDie(currPos, currScore, (playerIdWithTurn + 1) % game.length, universes * multiplier);
     } 
   }
   rollDie(posPerPlayer, scorePerPlayer, 0);
