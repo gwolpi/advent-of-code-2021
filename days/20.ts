@@ -36,4 +36,4 @@ const processInput = (input: string, enhancing = 2) => {
 
 export const p1 = (input: string): number => processInput(input.trim());
 
-export const p2 = (input: string): number => processInput(input.trim());
+export const p2 = (input: string): number => processInput(input.trim(), 50);

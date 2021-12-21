@@ -15,8 +15,8 @@ Deno.test('it should run the first part of day 20 correctly', () => {
   assertEquals(result, expected);
 });
 
-// Deno.test('it should run the second part of day 20 correctly', () => {
-//   const result = p2(input);
-//   const expected = 0;
-//   assertEquals(result, expected);
-// });
+Deno.test('it should run the second part of day 20 correctly', () => {
+  const result = p2(input);
+  const expected = 3351;
+  assertEquals(result, expected);
+});
